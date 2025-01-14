@@ -1,0 +1,42 @@
+data:
+  series:
+    - axt2
+    - adc
+    - b1500
+  val_split: 0.2
+  batch_size: 64 # 128
+  num_workers: 4
+  augment_data: false
+  normalize: true
+  zero_pad: true
+
+paths:
+  data_dir: "/gpfs/data/prostatelab/processed_data/h5/t2_dwi_filtered_20240212"
+  train_csv: "/gpfs/data/prostatelab/processed_data/csv/data_split/train_temporal_split_20240619_exclude_mismatch.csv"
+  # valid_csv: /gpfs/data/prostatelab/processed_data/csv/data_split/val_temporal_split_20240619_exclude_mismatch.csv
+  valid_csv:
+    - "/gpfs/data/prostatelab/processed_data/csv/data_split/val_temporal_split_20240619_exclude_mismatch.csv"
+    - "/gpfs/data/prostatelab/processed_data/csv/data_split/test_temporal_split_w_gleason_20240619_exclude_mismatch.csv"
+
+train:
+  epochs: 50
+  model:
+    name: MRI_ViT_3D
+    pretrained: false
+    num_classes: 2
+    combine_adc_b1500: true
+    vit:
+      pooling: "cls"  # Pooling: "max", "mean", "cls", "attention"
+  binarize: true
+  criterion: "ce_weighted"  # Loss function: "ce", "mse", or "bce"
+  optimizer:
+    name: "adamw"  # Optimizer: "adamw", "adam", "sgd", or "rmsprop"
+    lr: 0.00075
+  scheduler:
+    name: "cosine"  # Scheduler: "steplr", "exponentiallr", "reducelronplateau", "cosine", "onecycle", or "linear"
+
+logging:
+  wandb_project: "Prostate MRI Classification"
+  wandb_log_files:
+    - train.log
+    - valid.log
