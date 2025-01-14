@@ -26,7 +26,7 @@ This repository contains code for classifying prostate MRI images using deep lea
 1. Create a configuration file or use an existing one from the `config/` directory. Example configurations may include hyperparameters, dataset paths, and training settings.
 2. Run the training script with the chosen configuration file:
    ```bash
-   python train.py --config path/to/config.yaml
+   accelerate launch -m train config/resnet50.yaml
    ```
 
    Replace `path/to/config.yaml` with the actual path to your configuration file.
